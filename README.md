@@ -31,6 +31,21 @@ s.push_str(", world!");
 println!("{}", s);
 ```
 
+## Behind the Scenes
+
+### Memory Layout and Management
+- `&str` is a slice type that consists of two components: a pointer to the data and the length of the string. The data it points to is generally stored in a fixed memory location, often in the program's binary.
+  
+- `String` is a more complex data structure. It also keeps track of its capacity, which is the amount of memory allocated for the string. This allows the `String` to expand without reallocating memory each time something is appended.
+
+### Mutability and Ownership
+- `&str` being an immutable reference means that the contents of the string slice cannot be changed after they are initially set.
+- `String` provides mutability and ownership. When a `String` is modified, such as with `push_str` or similar methods, it might allocate new memory, copy the old data to the new space, and then modify it. This process is managed automatically and efficiently, with `String` taking care of memory management tasks.
+
+### Encoding
+- Both `&str` and `String` are UTF-8 encoded. This means any operation that involves indexing, slicing, or otherwise manipulating strings must account for the variable-width character encoding, which can make some operations non-trivial and potentially error-prone if not handled correctly.
+
+
 ## Operations on Strings
 
 ### Appending to a String
