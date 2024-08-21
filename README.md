@@ -184,3 +184,100 @@ println!("Squared numbers: {:?}", squared_numbers); // Outputs: Squared numbers:
 
 Closures are a powerful feature in Rust that allows you to write more flexible and reusable code. They are especially useful when you need a small function that you want to pass as an argument to other functions or when you need to capture and manipulate variables from a scope outside of a function.
 
+---
+---
+
+
+# Rust Match Statement
+
+The `match` statement in Rust is a powerful control flow operator that allows for pattern matching, which is similar to switch cases in other languages but more powerful.
+
+## Basic Syntax
+
+The basic syntax of a `match` statement involves matching a value against a series of patterns and executing the code associated with the first matching pattern.
+
+### Example
+```rust
+let x = 1;
+let result = match x {
+    1 => "one",
+    2 => "two",
+    _ => "other", // `_` is the catch-all pattern
+};
+println!("The result is: {}", result); // Outputs: The result is: one
+```
+
+## Pattern Matching
+
+`match` allows for complex pattern matching which includes matching ranges, destructuring tuples, structs, and enums, and even binding parts of data structures to variables.
+
+### Example with Enums
+```rust
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+}
+
+let msg = Message::Move { x: 3, y: 4 };
+
+let result = match msg {
+    Message::Quit => "Quit",
+    Message::Move { x, y } => "Move",
+    Message::Write(text) => &text,
+};
+println!("Action: {}", result);
+```
+
+## Guards
+
+Match arms can have guards to further refine the criteria for that arm being selected.
+
+### Example with Guards
+```rust
+let num = Some(4);
+
+let result = match num {
+    Some(x) if x < 5 => "less than five",
+    Some(x) => "greater than or equal to five",
+    None => "no value",
+};
+println!("Result: {}", result); // Outputs: Result: less than five
+```
+
+## Behind the Scenes
+
+### Compilation to Decision Trees
+
+Rust's `match` statements are compiled into efficient decision trees, which minimizes the runtime checks needed to find a match. This optimization ensures that `match` is not only clear and concise but also performs well.
+
+### Pattern Exhaustiveness Checking
+
+Rust compiler checks for exhaustiveness in `match` statements. This means the compiler ensures that all possible values of the variable being matched are handled explicitly, either in specific arms or via a catch-all pattern. This feature prevents runtime errors due to unhandled cases.
+
+## Advantages over If-Let Constructs
+
+While `if let` is great for single patterns, `match` allows handling multiple patterns in one statement, reducing complexity and improving code readability when dealing with multiple options.
+
+### Comparison Example
+```rust
+let some_option_value = Some(100);
+
+// Using if let
+if let Some(x) = some_option_value {
+    println!("The value is: {}", x);
+} else {
+    println!("There is no value.");
+}
+
+// Using match
+match some_option_value {
+    Some(x) => println!("The value is: {}", x),
+    None => println!("There is no value."),
+}
+```
+
+## Conclusion
+
+The `match` statement in Rust offers a robust way to handle multiple conditional branches with safety and efficiency. It's ideal for cases where you need to handle various scenarios of an enum, option, or any other data type with multiple forms.
+
