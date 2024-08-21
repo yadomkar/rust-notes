@@ -105,3 +105,82 @@ let s = String::from(slice);
 - Use `String` when you need a modifiable, owned string.
 - Conversions and operations like appending, slicing, and concatenating are fundamental for managing strings in Rust.
 
+---
+---
+
+
+# Rust Closures
+
+Closures in Rust are anonymous functions you can save in a variable or pass as arguments to other functions. They are capable of capturing their environment, making them versatile for many tasks, such as on-the-fly computations or dynamic function generation.
+
+## Basic Syntax
+
+The basic syntax of a closure in Rust is `||` followed by a block of code. The `||` indicates the closure's start and can capture variables from the surrounding scope.
+
+### Example
+```rust
+let add_one = |x| x + 1;
+let result = add_one(5);
+println!("The result is: {}", result); // Outputs: The result is: 6
+```
+
+## Capturing from the Environment
+
+Closures can capture variables from their surrounding scope in three ways: by reference, by mutable reference, or by taking ownership. Rust infers how to capture variables, but you can force a specific method using the `move` keyword.
+
+### Example of Capturing
+```rust
+let x = 4;
+let equal_to_x = |z| z == x;
+let y = 4;
+assert!(equal_to_x(y));
+```
+
+In this example, `x` is captured by reference inside the closure.
+
+### Using `move` Keyword
+
+The `move` keyword forces the closure to take ownership of the variables it uses. This is useful when you want to pass a closure to a new thread to ensure the closure has ownership of the data it uses.
+
+```rust
+let x = vec![1, 2, 3];
+let equal_to_x = move |z| z == x;
+// x can't be used here anymore as it's moved into the closure
+```
+
+## Parameters and Return Types
+
+Closures can take parameters and return values just like regular functions. The compiler usually infers the parameter types and the return type, but you can annotate them explicitly.
+
+```rust
+let multiply = |x: i32, y: i32| -> i32 { x * y };
+let result = multiply(5, 6);
+println!("The result is: {}", result); // Outputs: The result is: 30
+```
+
+## Comparison with Functions
+
+While closures are similar to functions, they differ in that closures can capture their surrounding environment. Functions cannot do this, which makes closures more flexible but slightly slower due to the overhead of managing the captured environment.
+
+### Function Example
+```rust
+fn add_one(x: i32) -> i32 { x + 1 }
+let result = add_one(5);
+println!("The result is: {}", result); // Outputs: The result is: 6
+```
+
+## Use in Iterators and Other Standard Library Features
+
+Closures are commonly used with iterators and other standard library features. For instance, they are used for custom sorting, filtering, and transformations.
+
+### Example with Iterator
+```rust
+let numbers = vec![1, 2, 3, 4, 5];
+let squared_numbers: Vec<i32> = numbers.iter().map(|&x| x * x).collect();
+println!("Squared numbers: {:?}", squared_numbers); // Outputs: Squared numbers: [1, 4, 9, 16, 25]
+```
+
+## Conclusion
+
+Closures are a powerful feature in Rust that allows you to write more flexible and reusable code. They are especially useful when you need a small function that you want to pass as an argument to other functions or when you need to capture and manipulate variables from a scope outside of a function.
+
